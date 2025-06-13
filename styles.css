@@ -1,0 +1,32 @@
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 135px;
+}
+
+.calculator-container {
+    height: 700px;
+    width: 500px;
+    border-radius: 15px;
+    border-style: solid transparent;
+    background-image: linear-gradient(to bottom, rgb(70, 70, 70), rgb(0,0,0));
+    
+}.calculator-container::before {  
+    content: "";
+    position:absolute;
+    inset: none;
+    left: 578px;
+    height: 700px;
+    width: 494px;
+    border-radius: 15px;
+    border: solid transparent;
+    background: linear-gradient(140deg, red, orange, yellow, green, indigo, blue) border-box;
+    mask: linear-gradient(#fff 0 0) padding-box, linear-gradient(#fff 0 0);
+    mask-composite: exclude;
+    border-top-width: 0px;
+    border-bottom-width: 0px;
+    border-left-width: 10px;
+    border-right-width: 10px;
+    border-radius: 20px;
+}
