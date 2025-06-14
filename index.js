@@ -1,4 +1,5 @@
 function initiateCalculator() {
+    
     const calculatorContainer = document.createElement('div')
     calculatorContainer.classList.add('calculator-container')
     document.body.appendChild(calculatorContainer)
@@ -34,13 +35,42 @@ function initiateCalculator() {
     keypadContainer.classList.add('keypad-container')
     calculatorContainer.appendChild(keypadContainer)
 
-    const circleButtonsContainer = document.createElement('div')
-    circleButtonsContainer.classList.add('circles')
-    document.body.appendChild(circleButtonsContainer)
-/*
-    for(i = 1; i < 8; i++) {
+    const circleContainer = document.createElement('div')
+    circleContainer.classList.add('circles-container')
+    keypadContainer.appendChild(circleContainer)
 
+    for(i = 1; i < 8; i++) {
+        const circleButton = document.createElement('button')
+        if (i === 1) {
+            circleButton.classList.add('circle-button-red')
+        } else {
+            circleButton.classList.add('circle-button-black')
+        }
+        circleButton.id = `circleButton${i}`
+        circleContainer.appendChild(circleButton)
     }
-*/
+
+    const squareContainer = document.createElement('div')
+    squareContainer.classList.add('squares-container')
+    keypadContainer.appendChild(squareContainer)
+    
+    for(i=1;i<13;i++) {
+        const squareButton = document.createElement('button')
+        squareButton.classList.add('square')
+        squareButton.id = `squareButton${i}`
+        if (i < 10) {
+            squareButton.textContent = `${i}`
+        } else if (i === 10) {
+            squareButton.textContent = '0'
+        } else if (i === 11) {
+            squareButton.textContent = '00'
+            squareButton.setAttribute('style', 'display: flex; justify-content: center; align-items: center;')
+        } else if (i === 12) {
+            squareButton.textContent = '.'
+            squareButton.setAttribute('style', 'position:')
+        }
+        squareContainer.appendChild(squareButton)
+    }
+
 }
 initiateCalculator()
