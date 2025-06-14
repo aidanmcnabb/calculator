@@ -7,7 +7,10 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    margin-top: 135px;
+    background-color: rgb(26, 25, 25);
+    /*background-image: linear-gradient(110deg, rgb(20, 20, 20), rgb(70,70,70));
+    background-size: cover;
+    background-repeat: no-repeat;*/
 }
 
 .calculator-container {
@@ -37,7 +40,7 @@ body {
     border-left-width: 10px;
     border-right-width: 10px;
     border-radius: 20px;
-    backdrop-filter: blur(10px) ;
+    backdrop-filter: blur(3px) ;
     /*red, orange, yellow, green, indigo, blue*/
 }.calculator-container::after {
     content: "";
@@ -55,8 +58,24 @@ body {
     border-left-width: 10px;
     border-right-width: 10px;
     border-radius: 20px;
-    backdrop-filter: blur(10px) ;
+    backdrop-filter: blur(7px) ;
     z-index: 2;
+}
+
+.inner-shadow {
+    position: absolute;
+    top: 24px;
+    left: 34px;
+    height: 182px;
+    width: 432px;
+    border-style: solid solid double solid;
+    border-width: 0px;
+    box-shadow: inset 0px 0px 8px 7px rgb(24, 24, 24);
+    border-radius: 20px;
+    z-index: 3;
+    outline-style: solid;
+    outline-offset: -7px;
+    outline-color: rgb(83, 83, 83);
 }
 
 .digital-screen {
@@ -68,30 +87,52 @@ body {
     width: 430px;
     height: 180px;
     border-width: 12px;
-    border-top-width: 40px;
+    border-top-width: 45px;
     border-color: rgb(209, 206, 206);
     border-radius: 20px;
     border-style:solid ;
     background-color: rgb(92, 104, 87);
     box-shadow: inset 0px 0px 10px 8px rgba(0, 0, 0, 0.548);
-}.digital-screen::after {
-    content: "";
-    position: absolute;
-    top: 20px;
-    left: 200px;
-    height: 180px;
-    width: 430px;
-    inset: 0;
-    box-shadow: 0px 0px 5px 2px black;
 }
 
 .calc-logo {
     position: absolute;
     z-index: 3;
-    top: 35px;
+    top: 41px;
     left: 60px;
     font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
     font-size: 20px;
-    color: rgb(66, 66, 66);
-    text-shadow: 2px 2px 2px grey;
+    color: rgb(92, 92, 92);
+    text-shadow: 0px 1px 1px grey;
+}
+
+.battery {
+    position: absolute;
+    top: 37px;
+    left: 350px;
+    z-index: 3;
+    width: 90px;
+    height: 30px;
+    background-color: rgb(49, 49, 49);
+    border-radius: 4px;
+    box-shadow: inset 0px 0px 6px 1px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 7px;
+    padding-left: 6px;
+    padding-right: 6px;
+    box-sizing: border-box;
+}
+
+.grey-tick {
+    height: 20px;
+    width: 11px;
+    background-color: rgb(97, 97, 97);
+}
+
+.green-tick {
+    height: 20px;
+    width: 11px;
+    background-color: rgb(31, 233, 24);
 }
