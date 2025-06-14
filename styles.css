@@ -1,3 +1,8 @@
+@font-face {
+    font-family: 'Digital';
+    src: url('fonts\\digital-7.ttf');
+}
+
 body {
     display: flex;
     justify-content: center;
@@ -10,18 +15,21 @@ body {
     width: 500px;
     border-radius: 15px;
     border-style: solid transparent;
-    background-image: linear-gradient(to bottom, rgb(70, 70, 70), rgb(0,0,0));
+    background-image: linear-gradient(to bottom, rgb(60, 60, 60), rgb(20,20,20));
+    position: absolute;
+    top: 15%;
+    box-shadow: 10px 10px 10px rgba(0, 0, 0, 0.39);
     
 }.calculator-container::before {  
     content: "";
     position:absolute;
     inset: none;
-    left: 578px;
+    left: -7px;
     height: 700px;
     width: 494px;
     border-radius: 15px;
     border: solid transparent;
-    background: linear-gradient(140deg, red, orange, yellow, green, indigo, blue) border-box;
+    /*background: linear-gradient(to bottom, ) border-box;*/
     mask: linear-gradient(#fff 0 0) padding-box, linear-gradient(#fff 0 0);
     mask-composite: exclude;
     border-top-width: 0px;
@@ -29,4 +37,61 @@ body {
     border-left-width: 10px;
     border-right-width: 10px;
     border-radius: 20px;
+    backdrop-filter: blur(10px) ;
+    /*red, orange, yellow, green, indigo, blue*/
+}.calculator-container::after {
+    content: "";
+    position:absolute;
+    inset: none;
+    left: -7px;
+    height: 700px;
+    width: 494px;
+    border-radius: 15px;
+    border: solid transparent;
+    mask: linear-gradient( 0 0) padding-box, linear-gradient( 0 0);
+    mask-composite: exclude;
+    border-top-width: 0px;
+    border-bottom-width: 0px;
+    border-left-width: 10px;
+    border-right-width: 10px;
+    border-radius: 20px;
+    backdrop-filter: blur(10px) ;
+    z-index: 2;
+}
+
+.digital-screen {
+    position: absolute;
+    box-sizing: border-box;
+    left: 35px;
+    top: 25px;
+    z-index: 3;
+    width: 430px;
+    height: 180px;
+    border-width: 12px;
+    border-top-width: 40px;
+    border-color: rgb(209, 206, 206);
+    border-radius: 20px;
+    border-style:solid ;
+    background-color: rgb(92, 104, 87);
+    box-shadow: inset 0px 0px 10px 8px rgba(0, 0, 0, 0.548);
+}.digital-screen::after {
+    content: "";
+    position: absolute;
+    top: 20px;
+    left: 200px;
+    height: 180px;
+    width: 430px;
+    inset: 0;
+    box-shadow: 0px 0px 5px 2px black;
+}
+
+.calc-logo {
+    position: absolute;
+    z-index: 3;
+    top: 35px;
+    left: 60px;
+    font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    font-size: 20px;
+    color: rgb(66, 66, 66);
+    text-shadow: 2px 2px 2px grey;
 }
