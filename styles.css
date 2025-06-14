@@ -136,3 +136,43 @@ body {
     width: 11px;
     background-color: rgb(31, 233, 24);
 }
+
+.keypad-container {
+    position: absolute;
+    top: 250px;
+    left: 35px;
+    z-index: 3;
+    border-radius: 20px;
+    height: 400px;
+    width: 430px;
+    background-image: linear-gradient(to bottom, rgb(209, 206, 206), rgb(80,80,80));
+    outline-style: solid;
+    outline-offset: -2px;
+    outline-color: rgb(87, 87, 87);
+    box-shadow: inset 0px -5px 15px 8px rgba(0, 0, 0, 0.589);
+};
+
+.circles {
+    height: 100px;
+    width: 100px;
+    background-color: purple;
+    z-index: 10;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    
+}
+
+/*
+.circle-button-red {
+
+}
+
+.circle-button-black {
+    
+}
+
+.square-button {
+    
+}
+*/

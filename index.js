@@ -29,5 +29,18 @@ function initiateCalculator() {
         }
         batteryContainer.appendChild(batteryTick)
     }
+
+    const keypadContainer = document.createElement('div')
+    keypadContainer.classList.add('keypad-container')
+    calculatorContainer.appendChild(keypadContainer)
+
+    const circleButtonsContainer = document.createElement('div')
+    circleButtonsContainer.classList.add('circles')
+    document.body.appendChild(circleButtonsContainer)
+/*
+    for(i = 1; i < 8; i++) {
+
+    }
+*/
 }
 initiateCalculator()
