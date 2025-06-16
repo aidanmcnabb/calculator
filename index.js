@@ -4,6 +4,10 @@ function initiateCalculator() {
     calculatorContainer.classList.add('calculator-container')
     document.body.appendChild(calculatorContainer)
 
+    const calculatorBorder = document.createElement('img')
+    calculatorBorder.src = 'img\\calc-border.png'
+    document.body.appendChild(calculatorBorder)
+
     const digitalScreen = document.createElement('div')
     digitalScreen.classList.add('digital-screen')
     calculatorContainer.appendChild(digitalScreen)
@@ -41,14 +45,24 @@ function initiateCalculator() {
 
     for(i = 1; i < 8; i++) {
         const circleButton = document.createElement('button')
+        circleButton.id = `circleButton${i}`
+        circleButton.classList.add('circle-button')
         if (i === 1) {
             circleButton.classList.add('circle-button-red')
         } else {
             circleButton.classList.add('circle-button-black')
         }
-        circleButton.id = `circleButton${i}`
         circleContainer.appendChild(circleButton)
     }
+
+    circleButton1.textContent = 'ON'
+    circleButton2.textContent = 'MC'
+    circleButton3.textContent = 'MR'
+    circleButton4.textContent = 'M-'
+    circleButton5.textContent = 'M+'
+    circleButton6.textContent = 'GT'
+    circleButton7.textContent = '±'
+    circleButton7.setAttribute('style', 'font-size:20px;')
 
     const squareContainer = document.createElement('div')
     squareContainer.classList.add('squares-container')
@@ -72,5 +86,62 @@ function initiateCalculator() {
         squareContainer.appendChild(squareButton)
     }
 
+    const squareContainer2 = document.createElement('div')
+    squareContainer2.classList.add('squares-container2')
+    keypadContainer.appendChild(squareContainer2)
+
+    for(i=1;i<7;i++) {
+        const squareButton = document.createElement('button')
+        squareButton.classList.add('square')
+        squareButton.id = `squareButton${i + 12}`
+        squareContainer2.appendChild(squareButton)
+        if (i === 6) {
+            squareButton13.setAttribute('style', 'padding-bottom:8px;')
+            squareButton14.setAttribute('style', 'padding-bottom:8px;')
+            squareButton15.setAttribute('style', 'font-size:15px; padding-left:8px; padding-top:3px;')
+            squareButton16.setAttribute('style', 'font-size:24px;')
+            squareButton17.setAttribute('style', 'font-size:26px; padding-right:3px;')
+            squareButton18.setAttribute('style', 'padding-top:8px; padding-left:8px; padding-top:14px;')
+        }
+    }
+
+    squareButton13.textContent = '←'
+    squareButton14.textContent = '→'
+    squareButton15.textContent = 'DEL'
+    squareButton16.textContent = '√'
+    squareButton17.textContent = '%'
+    squareButton18.textContent = '^'
+    
+    const equalsContainer = document.createElement('div')
+    equalsContainer.classList.add('equals-container')
+    keypadContainer.appendChild(equalsContainer)
+    const equalsButton = document.createElement('button')
+    equalsButton.classList.add('square')
+    equalsButton.textContent = '='
+    equalsContainer.appendChild(equalsButton)
+    equalsButton.setAttribute('style', 'height: 127px')
+
+    const squareContainer3 = document.createElement('div')
+    squareContainer3.classList.add('squares-container3')
+    keypadContainer.appendChild(squareContainer3)
+    
+    for(i=1;i<5;i++) {
+        const squareButton = document.createElement('button')
+        squareButton.classList.add('square')
+        squareButton.id = `squareButton${i + 18}`
+        squareContainer3.appendChild(squareButton)
+        if (i === 4) {
+            squareButton19.setAttribute('style', 'padding-bottom:3px; padding-right:4px;')
+            squareButton20.setAttribute('style', 'padding-bottom:5px; padding-right:4px;')
+            squareButton21.setAttribute('style', 'padding-bottom:3px; padding-right:4px;')
+            squareButton22.setAttribute('style', 'padding-bottom:3px; padding-right:4px;')
+        }
+    }
+
+    squareButton19.textContent = '-'
+    squareButton20.textContent = 'x'
+    squareButton21.textContent = '÷'
+    squareButton22.textContent = '+'
+    
 }
 initiateCalculator()
