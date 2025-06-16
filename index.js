@@ -213,3 +213,5 @@ function initiateCalculator() {
 initiateCalculator()
 
 // I want to animate stars on the edges of the screen, as well as the hue in the middle of the background changing.
+
+//the question is, should I add the  
