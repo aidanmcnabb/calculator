@@ -3,13 +3,11 @@ function initiateCalculator() {
     const calculatorContainer = document.createElement('div')
     calculatorContainer.classList.add('calculator-container')
     document.body.appendChild(calculatorContainer)
-    /*
-    const calculatorBorder = document.createElement('img')
-    calculatorBorder.src = 'img\\calc-border2.png'
-    calculatorBorder.classList.add('calc-border')
-    document.body.appendChild(calculatorBorder)
-    */
 
+    const giantShadow = document.createElement('div')
+    giantShadow.classList.add('giant-shadow')
+    document.body.appendChild(giantShadow)
+    
     const calcBorder = document.createElement('div')
     calcBorder.classList.add('calc-border')
     document.body.appendChild(calcBorder)
@@ -208,10 +206,62 @@ function initiateCalculator() {
     squareButton20.textContent = 'x'
     squareButton21.textContent = '÷'
     squareButton22.textContent = '+'
+
+    let ON = false
+
+    function calculations() {
+        circleButton1.addEventListener('mousedown', () => {
+            ON = true
+            
+            const digitalScreenInput = document.createElement('div')
+            digitalScreenInput.classList.add('digital-screen-input')
+            digitalScreen.appendChild(digitalScreenInput)
+            
+            digitalScreenInput.textContent = 0
+        })
+    }
+    calculations()
     
 }
 initiateCalculator()
 
 // I want to animate stars on the edges of the screen, as well as the hue in the middle of the background changing.
 
-//the question is, should I add the  
+/* 
+CHEATSHEET
+
+    circleButton1 = 'ON'
+    circleButton2 = 'MC'
+    circleButton3 = 'MR'
+    circleButton4 = 'M-'
+    circleButton5 = 'M+'
+    circleButton6 = 'GT'
+    circleButton7 = '±'
+
+    squareButton1 = '1'
+    squareButton2 = '2'
+    squareButton3 = '3'
+    squareButton4 = '4'
+    squareButton5 = '5'
+    squareButton6 = '6'
+    squareButton7 = '7'
+    squareButton8 = '8'
+    squareButton9 = '9'
+    squareButton10 = '0'
+    squareButton11 = '00'
+    squareButton12 = '.'
+    squareButton13 = '>'
+    squareButton14 = '<'
+    squareButton15 = 'del'
+    squareButton16 = 'square root'
+    squareButton17 = '%'
+    squareButton18 = 'pow'
+    squareButton19 = '-'
+    squareButton20 = 'x'
+    squareButton21 = '/'
+    squareButton22 = '+'
+
+    equalsButton = '='
+
+CHEATSHEET
+*/
