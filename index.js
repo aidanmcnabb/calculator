@@ -3,10 +3,16 @@ function initiateCalculator() {
     const calculatorContainer = document.createElement('div')
     calculatorContainer.classList.add('calculator-container')
     document.body.appendChild(calculatorContainer)
-
+    /*
     const calculatorBorder = document.createElement('img')
-    calculatorBorder.src = 'img\\calc-border.png'
+    calculatorBorder.src = 'img\\calc-border2.png'
+    calculatorBorder.classList.add('calc-border')
     document.body.appendChild(calculatorBorder)
+    */
+
+    const calcBorder = document.createElement('div')
+    calcBorder.classList.add('calc-border')
+    document.body.appendChild(calcBorder)
 
     const digitalScreen = document.createElement('div')
     digitalScreen.classList.add('digital-screen')
@@ -49,8 +55,28 @@ function initiateCalculator() {
         circleButton.classList.add('circle-button')
         if (i === 1) {
             circleButton.classList.add('circle-button-red')
+            circleButton.addEventListener('mousedown', () => {
+            circleButton.animate([
+                {transform: 'scale(1)'},
+                {transform: 'scale(.8)', boxShadow: 'rgba(0, 0, 0, 0.5) 0px 5px 5px 1px', backgroundImage: 'linear-gradient(to bottom, rgb(102, 18, 18), rgb(143, 26, 26), rgb(196, 37, 37), rgb(218, 114, 114))'},
+                {transform: 'scale(1)'}
+            ], {
+                duration: 150,
+                easing: 'ease-in-out'
+            });
+        })
         } else {
             circleButton.classList.add('circle-button-black')
+            circleButton.addEventListener('mousedown', () => {
+            circleButton.animate([
+                {transform: 'scale(1)'},
+                {transform: 'scale(.8)', boxShadow: 'rgba(0, 0, 0, 0.5) 0px 5px 5px 1px', backgroundImage: 'linear-gradient(to bottom, rgb(0, 0, 0), rgb(0, 0, 0), rgb(0, 0, 0), rgb(50,50,50))'},
+                {transform: 'scale(1)'}
+            ], {
+                duration: 150,
+                easing: 'ease-in-out'
+            });
+        })
         }
         circleContainer.appendChild(circleButton)
     }
@@ -84,6 +110,16 @@ function initiateCalculator() {
             squareButton.setAttribute('style', 'position:')
         }
         squareContainer.appendChild(squareButton)
+        squareButton.addEventListener('mousedown', () => {
+            squareButton.animate([
+                {transform: 'scale(1)'},
+                {transform: 'scale(.8)', boxShadow: 'rgba(0, 0, 0, 0.5) 0px 5px 5px 1px', backgroundImage: 'linear-gradient(to bottom, rgb(0, 0, 0), rgb(0, 0, 0), rgb(0, 0, 0), rgb(50,50,50))'},
+                {transform: 'scale(1)'}
+            ], {
+                duration: 150,
+                easing: 'ease-in-out'
+            });
+        })
     }
 
     const squareContainer2 = document.createElement('div')
@@ -103,6 +139,16 @@ function initiateCalculator() {
             squareButton17.setAttribute('style', 'font-size:26px; padding-right:3px;')
             squareButton18.setAttribute('style', 'padding-top:8px; padding-left:8px; padding-top:14px;')
         }
+        squareButton.addEventListener('mousedown', () => {
+            squareButton.animate([
+                {transform: 'scale(1)'},
+                {transform: 'scale(.8)', boxShadow: 'rgba(0, 0, 0, 0.5) 0px 5px 5px 1px', backgroundImage: 'linear-gradient(to bottom, rgb(0, 0, 0), rgb(0, 0, 0), rgb(0, 0, 0), rgb(50,50,50))'},
+                {transform: 'scale(1)'}
+            ], {
+                duration: 150,
+                easing: 'ease-in-out'
+            });
+        })
     }
 
     squareButton13.textContent = '←'
@@ -120,6 +166,16 @@ function initiateCalculator() {
     equalsButton.textContent = '='
     equalsContainer.appendChild(equalsButton)
     equalsButton.setAttribute('style', 'height: 127px')
+    equalsButton.addEventListener('mousedown', () => {
+            equalsButton.animate([
+                {transform: 'scale(1)'},
+                {transform: 'scale(.8)', boxShadow: 'rgba(0, 0, 0, 0.5) 0px 5px 5px 1px', backgroundImage: 'linear-gradient(to bottom, rgb(0, 0, 0), rgb(0, 0, 0), rgb(0, 0, 0), rgb(50,50,50))'},
+                {transform: 'scale(1)'}
+            ], {
+                duration: 150,
+                easing: 'ease-in-out'
+            });
+        })
 
     const squareContainer3 = document.createElement('div')
     squareContainer3.classList.add('squares-container3')
@@ -136,6 +192,16 @@ function initiateCalculator() {
             squareButton21.setAttribute('style', 'padding-bottom:3px; padding-right:4px;')
             squareButton22.setAttribute('style', 'padding-bottom:3px; padding-right:4px;')
         }
+        squareButton.addEventListener('mousedown', () => {
+            squareButton.animate([
+                {transform: 'scale(1)'},
+                {transform: 'scale(.8)', boxShadow: 'rgba(0, 0, 0, 0.5) 0px 5px 5px 1px', backgroundImage: 'linear-gradient(to bottom, rgb(0, 0, 0), rgb(0, 0, 0), rgb(0, 0, 0), rgb(50,50,50))'},
+                {transform: 'scale(1)'}
+            ], {
+                duration: 150,
+                easing: 'ease-in-out'
+            });
+        })
     }
 
     squareButton19.textContent = '-'
@@ -145,3 +211,5 @@ function initiateCalculator() {
     
 }
 initiateCalculator()
+
+// I want to animate stars on the edges of the screen, as well as the hue in the middle of the background changing.
