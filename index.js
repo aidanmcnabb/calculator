@@ -80,13 +80,12 @@ function initiateCalculator() {
     }
 
     circleButton1.textContent = 'ON'
-    circleButton2.textContent = 'MC'
-    circleButton3.textContent = 'MR'
-    circleButton4.textContent = 'M-'
-    circleButton5.textContent = 'M+'
-    circleButton6.textContent = 'GT'
-    circleButton7.textContent = '±'
-    circleButton7.setAttribute('style', 'font-size:20px;')
+    circleButton2.textContent = 'AC'
+    circleButton3.textContent = 'MC'
+    circleButton4.textContent = 'MR'
+    circleButton5.textContent = 'M-'
+    circleButton6.textContent = 'M+'
+    circleButton7.textContent = 'GT'
 
     const squareContainer = document.createElement('div')
     squareContainer.classList.add('squares-container')
@@ -208,19 +207,64 @@ function initiateCalculator() {
     squareButton22.textContent = '+'
 
     let ON = false
+    const digitalScreenInput = document.createElement('div')
 
-    function calculations() {
-        circleButton1.addEventListener('mousedown', () => {
-            ON = true
-            
-            const digitalScreenInput = document.createElement('div')
-            digitalScreenInput.classList.add('digital-screen-input')
-            digitalScreen.appendChild(digitalScreenInput)
-            
-            digitalScreenInput.textContent = 0
-        })
+    circleButton1.addEventListener('mousedown', () => {
+        digitalScreenInput.classList.add('digital-screen-input')
+        digitalScreen.appendChild(digitalScreenInput)
+        setTimeout(() => {
+            digitalScreenInput.textContent = '***********'
+            setTimeout(() => {
+                digitalScreenInput.textContent = ''
+                setTimeout(() => {
+                    digitalScreenInput.textContent = '***********'
+                    setTimeout(() => {
+                        digitalScreenInput.textContent = ''
+                        digitalScreenInput.setAttribute('style', 'color:rgba(37, 37, 37, 0.64);')
+                        ON = true
+                    },100)
+                },100)
+            },100)
+        },150)
+    }, {once: true})
+
+    function add(a, b) {
+        return a + b
     }
-    calculations()
+    function subtract(a, b) {
+        return a - b
+    }
+    function multiply(a, b) {
+        return a * b
+    }
+    function divide(a, b) {
+        return a / b
+    }
+    function sqrt(a) {
+        return Math.sqrt(a)
+    }
+    function modulus(a, b) {
+        return a % b
+    }
+    function pow(a, pow) {
+        return a ** pow
+    }
+
+    circleButton2.addEventListener('mousedown', () => {
+        digitalScreenInput.textContent = ''
+    })
+
+    const squareButtonsInput = squareContainer.querySelectorAll('.square')
+    squareButtonsInput.forEach(square => {
+        square.addEventListener('mousedown', () => {
+            digitalScreenInput.textContent += square.textContent
+            console.log(square.textContent)
+        })
+    })
+
+    
+    
+    console.log(squareButtonsInput)
     
 }
 initiateCalculator()
