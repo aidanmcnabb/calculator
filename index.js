@@ -135,6 +135,10 @@ function initiateCalculator() {
             squareButton16.setAttribute('style', 'font-size:24px;')
             squareButton17.setAttribute('style', 'font-size:26px; padding-right:3px;')
             squareButton18.setAttribute('style', 'padding-top:8px; padding-left:8px; padding-top:14px;')
+
+            squareButton16.classList.add('sqrt')
+            squareButton17.classList.add('modulus')
+            squareButton18.classList.add('pow')
         }
         squareButton.addEventListener('mousedown', () => {
             squareButton.animate([
@@ -207,11 +211,13 @@ function initiateCalculator() {
     squareButton22.textContent = '+'
 
     let ON = false
+    let operationInProgress = false
     const digitalScreenInput = document.createElement('div')
 
     circleButton1.addEventListener('mousedown', () => {
         digitalScreenInput.classList.add('digital-screen-input')
         digitalScreen.appendChild(digitalScreenInput)
+        digitalScreenInput.textContent = ''
         setTimeout(() => {
             digitalScreenInput.textContent = '***********'
             setTimeout(() => {
@@ -227,6 +233,21 @@ function initiateCalculator() {
             },100)
         },150)
     }, {once: true})
+
+    let stringActive = false
+    
+    circleButton2.addEventListener('mousedown', () => {
+        digitalScreenInput.textContent = ''
+        stringActive = false
+    })
+
+    const squareButtonsInput = squareContainer.querySelectorAll('.square')
+    squareButtonsInput.forEach(square => {
+        square.addEventListener('mousedown', () => {
+            digitalScreenInput.textContent += square.textContent
+            stringActive = true
+        })
+    })
 
     function add(a, b) {
         return a + b
@@ -250,20 +271,45 @@ function initiateCalculator() {
         return a ** pow
     }
 
-    circleButton2.addEventListener('mousedown', () => {
-        digitalScreenInput.textContent = ''
+    function operationCallback(callback) {
+        callback()
+    }
+
+    operationCallback(function() {console.log(divide(10, 5))})
+
+    let a = undefined
+
+    const squareOperatorsInput1 = squareContainer2.querySelectorAll('.square')
+    squareOperatorsInput1.forEach(square => {
+        if (square.classList.contains('sqrt')) {
+            square.addEventListener('mousedown', () => {
+                if (stringActive === true) {
+                    a = digitalScreenInput.textContent
+                    console.log(a)
+                    stringActive = false
+                    digitalScreenInput.textContent = ''
+                    console.log('sqrt')
+                }
+            })
+        } else if (square.classList.contains('modulus')) {
+            square.addEventListener('mousedown', () => {
+                if (stringActive === true) {
+                    stringActive = false
+                    digitalScreenInput.textContent = ''
+                    console.log('modulus')
+                }
+            })
+        } else if (square.classList.contains('pow')) {
+            square.addEventListener('mousedown', () => {
+                if (stringActive === true) {
+                    stringActive = false
+                    digitalScreenInput.textContent = ''
+                    console.log('pow')
+                }
+            })
+        }
     })
 
-    const squareButtonsInput = squareContainer.querySelectorAll('.square')
-    squareButtonsInput.forEach(square => {
-        square.addEventListener('mousedown', () => {
-            digitalScreenInput.textContent += square.textContent
-            console.log(square.textContent)
-        })
-    })
-
-    
-    
     console.log(squareButtonsInput)
     
 }
