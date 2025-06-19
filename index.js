@@ -330,27 +330,23 @@ function initiateCalculator() {
         stringActive = true
         if (currentOperator === 'sqrt') {
             operationCallback(function() {sqrt(a)})
-            reduceResult()
-            digitalScreenInput.textContent = result
         }
         if (currentOperator === 'modulus') {
             b = Number(b)
             operationCallback(function() {modulus(a, b)})
-            reduceResult()
-            digitalScreenInput.textContent = result
-            operationInProgress = false
         }
         if (currentOperator === 'pow') {
             b = Number(b)
             operationCallback(function() {pow(a, b)})
-            reduceResult()
-            digitalScreenInput.textContent = result
-            operationInProgress = false
         }
+        reduceResult()
+        digitalScreenInput.textContent = result
         resultFilled = true
+        operationInProgress = false
     }
 
     let targetLength = 9
+    //let resultLength = undefined
 
     function isFloat(num) {
         return num % 1 !== 0;
@@ -360,9 +356,16 @@ function initiateCalculator() {
         if (isFloat(result)) {
             result = result.toFixed(2)
         }
-        if (result.length > targetLength) {
-            result = result.slice(-9, targetLength) /// IM RIGHT HERE
+        if (result > 999999999) {
+            //result = Number(result)
+            result = result.toExponential(2)
+            result = result.toString()
+            result = result.slice(0, 1) + '.' + result.slice(1)
+            //result = result.slice(0, 1) + '.' + result.slice(1)
+            console.log('on')
         }
+        result = Number(result)
+        console.log(result)
     }
 
     equalsButton.addEventListener('mousedown', () => {
