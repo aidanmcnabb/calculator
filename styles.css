@@ -12,8 +12,8 @@ body {
     background-size: cover;
     background-repeat: no-repeat;*/
     height: 100vh;
-
     overflow: hidden;
+    user-select: none;
 }
 /*
 .body-ani {
@@ -160,6 +160,7 @@ body {
     justify-content: end;
     height: 130px;
     width: 380px;
+    overflow: hidden;
 }
 
 .calc-logo {

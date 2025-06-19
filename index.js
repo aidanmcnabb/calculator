@@ -211,7 +211,6 @@ function initiateCalculator() {
     squareButton22.textContent = '+'
 
     let ON = false
-    let operationInProgress = false
     const digitalScreenInput = document.createElement('div')
 
     circleButton1.addEventListener('mousedown', () => {
@@ -235,6 +234,11 @@ function initiateCalculator() {
     }, {once: true})
 
     let stringActive = false
+    let resultFilled = false
+    let operationInProgress = false
+
+    let a = undefined
+    let b = undefined
     
     circleButton2.addEventListener('mousedown', () => {
         digitalScreenInput.textContent = ''
@@ -244,73 +248,127 @@ function initiateCalculator() {
     const squareButtonsInput = squareContainer.querySelectorAll('.square')
     squareButtonsInput.forEach(square => {
         square.addEventListener('mousedown', () => {
+            if (resultFilled) {
+                digitalScreenInput.textContent = ''
+                resultFilled = false
+            }
             digitalScreenInput.textContent += square.textContent
+            if (operationInProgress) {
+                b = digitalScreenInput.textContent
+            }
             stringActive = true
         })
     })
 
+    let result = undefined
+    let currentOperator = ''
+
     function add(a, b) {
-        return a + b
+        return result = a + b
     }
     function subtract(a, b) {
-        return a - b
+        return result = a - b
     }
     function multiply(a, b) {
-        return a * b
+        return result = a * b
     }
     function divide(a, b) {
-        return a / b
+        return result = a / b
     }
     function sqrt(a) {
-        return Math.sqrt(a)
+        return result = Math.sqrt(a)
     }
     function modulus(a, b) {
-        return a % b
+        return result = a % b
     }
     function pow(a, pow) {
-        return a ** pow
+        return result = a ** pow
     }
 
     function operationCallback(callback) {
         callback()
     }
 
-    operationCallback(function() {console.log(divide(10, 5))})
-
-    let a = undefined
+    //operationCallback(function() {console.log(divide(10, 5))})
 
     const squareOperatorsInput1 = squareContainer2.querySelectorAll('.square')
     squareOperatorsInput1.forEach(square => {
         if (square.classList.contains('sqrt')) {
             square.addEventListener('mousedown', () => {
-                if (stringActive === true) {
-                    a = digitalScreenInput.textContent
-                    console.log(a)
+                if (stringActive) {
                     stringActive = false
+                    a = digitalScreenInput.textContent
                     digitalScreenInput.textContent = ''
-                    console.log('sqrt')
+                    currentOperator = 'sqrt'
+                    evaluate()
                 }
             })
         } else if (square.classList.contains('modulus')) {
             square.addEventListener('mousedown', () => {
-                if (stringActive === true) {
+                if (stringActive) {
                     stringActive = false
+                    a = digitalScreenInput.textContent
                     digitalScreenInput.textContent = ''
-                    console.log('modulus')
+                    currentOperator = 'modulus'
+                    operationInProgress = true
                 }
             })
         } else if (square.classList.contains('pow')) {
             square.addEventListener('mousedown', () => {
-                if (stringActive === true) {
+                if (stringActive) {
                     stringActive = false
+                    a = digitalScreenInput.textContent
                     digitalScreenInput.textContent = ''
-                    console.log('pow')
+                    currentOperator = 'pow'
+                    operationInProgress = true
                 }
             })
         }
     })
 
-    console.log(squareButtonsInput)
+    function evaluate() {
+        stringActive = true
+        if (currentOperator === 'sqrt') {
+            operationCallback(function() {sqrt(a)})
+            reduceResult()
+            digitalScreenInput.textContent = result
+        }
+        if (currentOperator === 'modulus') {
+            b = Number(b)
+            operationCallback(function() {modulus(a, b)})
+            reduceResult()
+            digitalScreenInput.textContent = result
+            operationInProgress = false
+        }
+        if (currentOperator === 'pow') {
+            b = Number(b)
+            operationCallback(function() {pow(a, b)})
+            reduceResult()
+            digitalScreenInput.textContent = result
+            operationInProgress = false
+        }
+        resultFilled = true
+    }
+
+    let targetLength = 9
+
+    function isFloat(num) {
+        return num % 1 !== 0;
+    }
+
+    function reduceResult() {
+        if (isFloat(result)) {
+            result = result.toFixed(2)
+        }
+        if (result.length > targetLength) {
+            result = result.slice(-9, targetLength) /// IM RIGHT HERE
+        }
+    }
+
+    equalsButton.addEventListener('mousedown', () => {
+        evaluate()
+    })
+
     
 }
 initiateCalculator()
