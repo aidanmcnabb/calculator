@@ -12,6 +12,27 @@ function initiateCalculator() {
     calcBorder.classList.add('calc-border')
     document.body.appendChild(calcBorder)
 
+    function calcEntrance() {
+        calculatorContainer.animate([
+            {opacity: '0', transform: 'scale(.9) translateY(100px)'},
+            {opacity: '1'}
+        ], {
+            duration: 850,
+            delay: 2000,
+            easing: 'ease-in-out',
+            fill: 'forwards'
+        })
+        calcBorder.animate([
+            {opacity: '0'},
+            {opacity: '1'}
+        ], {
+            duration: 2000,
+            easing: 'ease-in-out',
+            fill: 'forwards'
+        }) 
+    }
+    calcEntrance()
+
     const digitalScreen = document.createElement('div')
     digitalScreen.classList.add('digital-screen')
     calculatorContainer.appendChild(digitalScreen)
@@ -28,7 +49,6 @@ function initiateCalculator() {
     const batteryContainer = document.createElement('div')
     batteryContainer.classList.add('battery')
     calculatorContainer.appendChild(batteryContainer)
-
     // All containers and added classes for style
 
     for(i = 1; i < 6; i++) {
@@ -40,13 +60,11 @@ function initiateCalculator() {
         }
         batteryContainer.appendChild(batteryTick)
     }
-
     // Adding battery container with battery ticks
 
     const keypadContainer = document.createElement('div')
     keypadContainer.classList.add('keypad-container')
     calculatorContainer.appendChild(keypadContainer)
-
     // Where all buttons will be located and referenced to through querySelectAll & .forEach() to populate the divs / add eventlisteners.
 
     const circleContainer = document.createElement('div')
@@ -84,7 +102,6 @@ function initiateCalculator() {
         }
         circleContainer.appendChild(circleButton)
     }
-
     // Loop to create circle buttons and give each a seperate id to call if I need. Styling through setAttribute & animate.
 
     circleButton1.textContent = 'ON'
@@ -126,7 +143,6 @@ function initiateCalculator() {
             });
         })
     }
-
     // The square button containers are seperated into 3 seperate containers. I could have done it with 1 but I wanted more specificity. More styling and animating.
 
     const squareContainer2 = document.createElement('div')
@@ -157,7 +173,6 @@ function initiateCalculator() {
             });
         })
     }
-
     // Square button container 2
 
     squareButton13.textContent = '←'
@@ -170,7 +185,6 @@ function initiateCalculator() {
     squareButton16.classList.add('sqrt')
     squareButton17.classList.add('modulus')
     squareButton18.classList.add('pow')
-
     //Adding classes for querySelect later.
     
     const equalsContainer = document.createElement('div')
@@ -191,7 +205,6 @@ function initiateCalculator() {
             easing: 'ease-in-out'
         });
     })
-
     //Equals button has its own seperate container.
 
     const squareContainer3 = document.createElement('div')
@@ -220,7 +233,6 @@ function initiateCalculator() {
             });
         })
     }
-
     //Square container 3.
 
     squareButton19.textContent = '-'
@@ -236,10 +248,23 @@ function initiateCalculator() {
     let ON = false //for niche use in a couple places. 
     const digitalScreenInput = document.createElement('div')
 
+    function backgroundBatteryAni() {
+        giantShadow.animate([
+            {boxShadow: 'inset 0px 0px 600px 300px'}
+        ], {
+            duration: 3050,
+            easing: 'ease-in-out',
+            fill: 'forwards'
+        })
+        
+        //battery turns yellow and then turns green once its ready
+    }
+
     circleButton1.addEventListener('mousedown', () => {
         digitalScreenInput.classList.add('digital-screen-input')
         digitalScreen.appendChild(digitalScreenInput)
         digitalScreenInput.textContent = ''
+        backgroundBatteryAni()
         setTimeout(() => {
             digitalScreenInput.textContent = '***********'
             setTimeout(() => {
@@ -248,278 +273,256 @@ function initiateCalculator() {
                     digitalScreenInput.textContent = '***********'
                     setTimeout(() => {
                         digitalScreenInput.textContent = ''
-                        digitalScreenInput.setAttribute('style', 'color:rgba(37, 37, 37, 0.64);')
-                        ON = true
                     },100)
                 },100)
             },100)
         },150)
+        setTimeout(() => {
+            digitalScreenInput.textContent = '**LOADING**'
+            setTimeout(() => {
+                digitalScreenInput.textContent = ''
+                setTimeout(() => {
+                    digitalScreenInput.textContent = '**LOADING**'
+                    setTimeout(() => {
+                        digitalScreenInput.textContent = ''
+                        digitalScreenInput.setAttribute('style', 'color:rgba(37, 37, 37, 0.64);')
+                        ON = true
+                        calculatorLogic()
+                    },700)
+                },700)
+            },700)
+        },550)
     }, {once: true})
-
     //Calculator animation for turning on.
 
-    let stringActive = false //if an active string is being typed
-    let resultFilled = false //if result is filled from last calculation
-    let operationInProgress = false //if operation is in progress 
+    function calculatorLogic() {
 
-    let a = undefined
-    let b = undefined
-    
-    circleButton2.addEventListener('mousedown', () => {
-        digitalScreenInput.textContent = ''
-        stringActive = false
-    })
+        let stringActive = false //if an active string is being typed
+        let resultFilled = false //if result is filled from last calculation
+        let operationInProgress = false //if operation is in progress 
 
-    //AC button
-
-    function negativePossible() { //even if a current operation is in progress, negative is possible
-        return currentOperator === 'sqrt' || currentOperator === 'modulus' || currentOperator === 'pow' || currentOperator === 'subtract' || currentOperator === 'multiply' || currentOperator === 'divide' || currentOperator === 'add'
-    }
-
-    const squareButtonsInput = squareContainer.querySelectorAll('.square')
-    squareButtonsInput.forEach(square => {
-        square.addEventListener('mousedown', () => {
-            if (resultFilled) { //if result from last operation is filled, temporarily erase input field on next number button press
-                if (negativePossible()) {} else { // preventing negative sign from being erased on number button press if result was already filled
-                        digitalScreenInput.textContent = ''
-                    }
-                resultFilled = false //result no longer filled
-            }
-            digitalScreenInput.textContent += square.textContent
-            if (operationInProgress) { 
-                b = digitalScreenInput.textContent
-            }
-            stringActive = true //string is now active on number button press
+        let a = undefined
+        let b = undefined
+        
+        circleButton2.addEventListener('mousedown', () => {
+            digitalScreenInput.textContent = ''
+            stringActive = false
         })
-    })
 
-    let result = undefined
-    let currentOperator = ''
+        //AC button
 
-    function add(a, b) {
-        a = Number(a)
-        return result = a + b
-    }
-    function subtract(a, b) {
-        return result = a - b
-    }
-    function multiply(a, b) {
-        return result = a * b
-    }
-    function divide(a, b) {
-        return result = a / b
-    }
-    function sqrt(a) {
-        return result = Math.sqrt(a)
-    }
-    function modulus(a, b) {
-        return result = a % b
-    }
-    function pow(a, pow) {
-        return result = a ** pow
-    }
+        function negativePossible() { //even if a current operation is in progress, negative is possible
+            return currentOperator === 'sqrt' || currentOperator === 'modulus' || currentOperator === 'pow' || currentOperator === 'subtract' || currentOperator === 'multiply' || currentOperator === 'divide' || currentOperator === 'add'
+        }
 
-    function operationCallback(callback) {
-        callback()
-    }
-
-    //calculations and callback function to call them
-
-    let isNegative = false
-
-    const squareOperatorsInput1 = keypadContainer.querySelectorAll('.square')
-    squareOperatorsInput1.forEach(square => {
-        if (square.classList.contains('sqrt')) {
+        const squareButtonsInput = squareContainer.querySelectorAll('.square')
+        squareButtonsInput.forEach(square => {
             square.addEventListener('mousedown', () => {
-                if (stringActive && currentOperator === '') { //if string is active & there is no operator, prepare for calculation. prevents premptive operation / multiple operators.
-                    stringActive = false
-                    a = digitalScreenInput.textContent
-                    digitalScreenInput.textContent = ''
-                    currentOperator = 'sqrt' //sends current operator to evaluation
-                    evaluate()
-                }
-            })
-        } else if (square.classList.contains('modulus')) {
-            square.addEventListener('mousedown', () => {
-                if (stringActive && currentOperator === '') {
-                    stringActive = false
-                    a = digitalScreenInput.textContent
-                    digitalScreenInput.textContent = ''
-                    currentOperator = 'modulus'
-                    operationInProgress = true // sqrt doesn't need operationInProgress, instant evaluation.
-                }
-            })
-        } else if (square.classList.contains('pow')) {
-            square.addEventListener('mousedown', () => {
-                if (stringActive && currentOperator === '') {
-                    stringActive = false
-                    a = digitalScreenInput.textContent
-                    digitalScreenInput.textContent = ''
-                    currentOperator = 'pow'
-                    operationInProgress = true
-                }
-            })
-        } else if (square.classList.contains('multiply')) {
-            square.addEventListener('mousedown', () => {
-                if (stringActive && currentOperator === '') {
-                    stringActive = false
-                    a = digitalScreenInput.textContent
-                    digitalScreenInput.textContent = ''
-                    currentOperator = 'multiply'
-                    operationInProgress = true
-                }
-            })
-        } else if (square.classList.contains('subtract')) {
-            square.addEventListener('mousedown', () => {
-                if (ON && digitalScreenInput.textContent === '' || negativePossible()) { //prevents premptive negative / allows initial negative & checks if negative is possible
-                        if (!isNegative) { //prevents multiple negative symbols
-                            console.log('empty')
-                            digitalScreenInput.textContent += '-'
-                            isNegative = true
+                if (resultFilled) { //if result from last operation is filled, temporarily erase input field on next number button press
+                    if (negativePossible()) {} else { // preventing negative sign from being erased on number button press if result was already filled
+                            digitalScreenInput.textContent = ''
                         }
+                    resultFilled = false //result no longer filled
+                }
+                digitalScreenInput.textContent += square.textContent
+                if (operationInProgress) { 
+                    b = digitalScreenInput.textContent
+                }
+                stringActive = true //string is now active on number button press
+            })
+        })
+
+        let result = undefined
+        let currentOperator = ''
+
+        function add(a, b) {
+            a = Number(a)
+            return result = a + b
+        }
+        function subtract(a, b) {
+            return result = a - b
+        }
+        function multiply(a, b) {
+            return result = a * b
+        }
+        function divide(a, b) {
+            return result = a / b
+        }
+        function sqrt(a) {
+            return result = Math.sqrt(a)
+        }
+        function modulus(a, b) {
+            return result = a % b
+        }
+        function pow(a, pow) {
+            return result = a ** pow
+        }
+
+        function operationCallback(callback) {
+            callback()
+        }
+        //calculations and callback function to call them
+
+        let isNegative = false
+
+        const squareOperatorsInput1 = keypadContainer.querySelectorAll('.square')
+        squareOperatorsInput1.forEach(square => {
+            if (square.classList.contains('sqrt')) {
+                square.addEventListener('mousedown', () => {
+                    if (stringActive && currentOperator === '') { //if string is active & there is no operator, prepare for calculation. prevents premptive operation / multiple operators.
+                        stringActive = false
+                        a = digitalScreenInput.textContent
+                        digitalScreenInput.textContent = ''
+                        currentOperator = 'sqrt' //sends current operator to evaluation
+                        evaluate()
                     }
-                if (stringActive && currentOperator === '') {
-                    stringActive = false
-                    a = digitalScreenInput.textContent
-                    digitalScreenInput.textContent = ''
-                    currentOperator = 'subtract'
-                    operationInProgress = true
-                }
-            })
-        } else if (square.classList.contains('add')) {
-            square.addEventListener('mousedown', () => {
-                if (stringActive && currentOperator === '') {
-                    stringActive = false
-                    a = digitalScreenInput.textContent
-                    digitalScreenInput.textContent = ''
-                    currentOperator = 'add'
-                    operationInProgress = true
-                }
-            })
-        } else if (square.classList.contains('divide')) {
-            square.addEventListener('mousedown', () => {
-                if (stringActive && currentOperator === '') {
-                    stringActive = false
-                    a = digitalScreenInput.textContent
-                    digitalScreenInput.textContent = ''
-                    currentOperator = 'divide'
-                    operationInProgress = true
-                }
-            })
+                })
+            } else if (square.classList.contains('modulus')) {
+                square.addEventListener('mousedown', () => {
+                    if (stringActive && currentOperator === '') {
+                        stringActive = false
+                        a = digitalScreenInput.textContent
+                        digitalScreenInput.textContent = ''
+                        currentOperator = 'modulus'
+                        operationInProgress = true // sqrt doesn't need operationInProgress, instant evaluation.
+                    }
+                })
+            } else if (square.classList.contains('pow')) {
+                square.addEventListener('mousedown', () => {
+                    if (stringActive && currentOperator === '') {
+                        stringActive = false
+                        a = digitalScreenInput.textContent
+                        digitalScreenInput.textContent = ''
+                        currentOperator = 'pow'
+                        operationInProgress = true
+                    }
+                })
+            } else if (square.classList.contains('multiply')) {
+                square.addEventListener('mousedown', () => {
+                    if (stringActive && currentOperator === '') {
+                        stringActive = false
+                        a = digitalScreenInput.textContent
+                        digitalScreenInput.textContent = ''
+                        currentOperator = 'multiply'
+                        operationInProgress = true
+                    }
+                })
+            } else if (square.classList.contains('subtract')) {
+                square.addEventListener('mousedown', () => {
+                    if (ON && digitalScreenInput.textContent === '' || negativePossible()) { //prevents premptive negative / allows initial negative & checks if negative is possible
+                            if (!isNegative) { //prevents multiple negative symbols
+                                digitalScreenInput.textContent += '-'
+                                isNegative = true
+                            }
+                        }
+                    if (stringActive && currentOperator === '') {
+                        stringActive = false
+                        a = digitalScreenInput.textContent
+                        digitalScreenInput.textContent = ''
+                        currentOperator = 'subtract'
+                        operationInProgress = true
+                    }
+                })
+            } else if (square.classList.contains('add')) {
+                square.addEventListener('mousedown', () => {
+                    if (stringActive && currentOperator === '') {
+                        stringActive = false
+                        a = digitalScreenInput.textContent
+                        digitalScreenInput.textContent = ''
+                        currentOperator = 'add'
+                        operationInProgress = true
+                    }
+                })
+            } else if (square.classList.contains('divide')) {
+                square.addEventListener('mousedown', () => {
+                    if (stringActive && currentOperator === '') {
+                        stringActive = false
+                        a = digitalScreenInput.textContent
+                        digitalScreenInput.textContent = ''
+                        currentOperator = 'divide'
+                        operationInProgress = true
+                    }
+                })
+            }
+        })
+        //keypad operator logic 
+
+        function evaluate() {
+            stringActive = true
+            if (currentOperator === 'sqrt') {
+                operationCallback(function() {sqrt(a)})
+            } else if (currentOperator === 'modulus') {
+                b = Number(b)
+                operationCallback(function() {modulus(a, b)})
+            } else if (currentOperator === 'pow') {
+                b = Number(b)
+                operationCallback(function() {pow(a, b)})
+            } else if (currentOperator === 'multiply') {
+                b = Number(b)
+                operationCallback(function() {multiply(a, b)})
+            } else if (currentOperator === 'subtract') {
+                b = Number(b)
+                operationCallback(function() {subtract(a, b)})
+            } else if (currentOperator === 'add') {
+                b = Number(b)
+                operationCallback(function() {add(a, b)})
+            } else if (currentOperator === 'divide') {
+                b = Number(b)
+                operationCallback(function() {divide(a, b)})
+            }
+            reduceResult() //deals with notations, floats, NaN
+            digitalScreenInput.textContent = result
+            resultFilled = true
+            operationInProgress = false
+            isNegative = false //reset negative sign capability
+            currentOperator = '' //reset psuedo switch statement
+            b = 0
         }
-    })
 
-    //keypad operator logic 
+        let notation = false
 
-    function evaluate() {
-        stringActive = true
-        if (currentOperator === 'sqrt') {
-            operationCallback(function() {sqrt(a)})
-        } else if (currentOperator === 'modulus') {
-            b = Number(b)
-            operationCallback(function() {modulus(a, b)})
-        } else if (currentOperator === 'pow') {
-            b = Number(b)
-            operationCallback(function() {pow(a, b)})
-        } else if (currentOperator === 'multiply') {
-            b = Number(b)
-            operationCallback(function() {multiply(a, b)})
-        } else if (currentOperator === 'subtract') {
-            b = Number(b)
-            operationCallback(function() {subtract(a, b)})
-        } else if (currentOperator === 'add') {
-            b = Number(b)
-            operationCallback(function() {add(a, b)})
-        } else if (currentOperator === 'divide') {
-            b = Number(b)
-            operationCallback(function() {divide(a, b)})
+        function isFloat(num) {
+            return num % 1 !== 0;
         }
-        reduceResult() //deals with notations, floats, NaN
-        digitalScreenInput.textContent = result
-        resultFilled = true
-        operationInProgress = false
-        isNegative = false //reset negative sign capability
-        currentOperator = '' //reset psuedo switch statement
-        b = 0
-    }
 
-    let notation = false
-
-    function isFloat(num) {
-        return num % 1 !== 0;
-    }
-
-    function reduceResult() {
-        notation = false
-        if (isFloat(result)) {
-            result = result.toFixed(2)
-        }
-        if (result > 999999999 || result < -999999999) {
+        function reduceResult() {
+            notation = false
             if (isFloat(result)) {
-                result = result.toString()
-                result = result.slice(0, -2) //remove decimals points for toExponential()
+                result = result.toFixed(2)
+            }
+            if (result > 999999999 || result < -999999999) {
+                if (isFloat(result)) {
+                    result = result.toString()
+                    result = result.slice(0, -2) //remove decimals points for toExponential()
+                    result = Number(result)
+                }
+                result = result.toExponential(2) //notation
+                notation = true
+            }
+            if (!notation) {
                 result = Number(result)
             }
-            result = result.toExponential(2) //notation
-            notation = true
+            if (result === 'NaN' || result !== result) {
+                result = 'Infinity?'
+            }
+            console.log(result)
         }
-        if (!notation) {
-            result = Number(result)
-        }
-        if (result === 'NaN' || result !== result) {
-            result = 'Infinity?'
-        }
-        console.log(result)
-    }
 
-    equalsButton.addEventListener('mousedown', () => {
-        if (currentOperator === '') {} else {
-            evaluate()
-        }
-        
-    })
+        equalsButton.addEventListener('mousedown', () => {
+            if (currentOperator === '') {} else {
+                evaluate()
+            }
+        })
+    }
 }
 initiateCalculator()
 
-//AC isnt reseting variables, still issues with negative
+//AC isnt reseting variables
+
+//Need an indicator of what operation is happening
+
+//Have to code circle buttons
+
+//have to animate calculator entrance
 
 // I want to animate stars on the edges of the screen, as well as the hue in the middle of the background changing.
-
-/* 
-CHEATSHEET
-
-    circleButton1 = 'ON'
-    circleButton2 = 'MC'
-    circleButton3 = 'MR'
-    circleButton4 = 'M-'
-    circleButton5 = 'M+'
-    circleButton6 = 'GT'
-    circleButton7 = '±'
-
-    squareButton1 = '1'
-    squareButton2 = '2'
-    squareButton3 = '3'
-    squareButton4 = '4'
-    squareButton5 = '5'
-    squareButton6 = '6'
-    squareButton7 = '7'
-    squareButton8 = '8'
-    squareButton9 = '9'
-    squareButton10 = '0'
-    squareButton11 = '00'
-    squareButton12 = '.'
-    squareButton13 = '>'
-    squareButton14 = '<'
-    squareButton15 = 'del'
-    squareButton16 = 'square root'
-    squareButton17 = '%'
-    squareButton18 = 'pow'
-    squareButton19 = '-'
-    squareButton20 = 'x'
-    squareButton21 = '/'
-    squareButton22 = '+'
-
-    equalsButton = '='
-
-CHEATSHEET
-*/
