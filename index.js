@@ -53,11 +53,8 @@ function initiateCalculator() {
 
     for(i = 1; i < 6; i++) {
         const batteryTick = document.createElement('div')
-        if (i <= 2) {
-            batteryTick.classList.add('grey-tick')
-        } else {
-            batteryTick.classList.add('green-tick')
-        }
+        batteryTick.id = `batteryTick${i}`
+        batteryTick.classList.add('grey-tick')
         batteryContainer.appendChild(batteryTick)
     }
     // Adding battery container with battery ticks
@@ -106,10 +103,10 @@ function initiateCalculator() {
 
     circleButton1.textContent = 'ON'
     circleButton2.textContent = 'AC'
-    circleButton3.textContent = 'MC'
-    circleButton4.textContent = 'MR'
-    circleButton5.textContent = 'M-'
-    circleButton6.textContent = 'M+'
+    circleButton3.textContent = 'M+'
+    circleButton4.textContent = 'M-'
+    circleButton5.textContent = 'MR'
+    circleButton6.textContent = 'MC'
     circleButton7.textContent = 'GT'
 
     const squareContainer = document.createElement('div')
@@ -279,11 +276,22 @@ function initiateCalculator() {
         },150)
         setTimeout(() => {
             digitalScreenInput.textContent = '**LOADING**'
+            batteryTick5.classList.add('yellow-tick')
             setTimeout(() => {
                 digitalScreenInput.textContent = ''
+                batteryTick4.classList.add('yellow-tick')
                 setTimeout(() => {
                     digitalScreenInput.textContent = '**LOADING**'
+                    batteryTick3.classList.add('yellow-tick')
                     setTimeout(() => {
+                        batteryTick3.classList.remove('yellow-tick')
+                        batteryTick4.classList.remove('yellow-tick')
+                        batteryTick5.classList.remove('yellow-tick')
+                        
+                        batteryTick3.classList.add('green-tick')
+                        batteryTick4.classList.add('green-tick')
+                        batteryTick5.classList.add('green-tick')
+
                         digitalScreenInput.textContent = ''
                         digitalScreenInput.setAttribute('style', 'color:rgba(37, 37, 37, 0.64);')
                         ON = true
@@ -385,6 +393,7 @@ function initiateCalculator() {
                         digitalScreenInput.textContent = ''
                         currentOperator = 'modulus'
                         operationInProgress = true // sqrt doesn't need operationInProgress, instant evaluation.
+                        visualOperator()
                     }
                 })
             } else if (square.classList.contains('pow')) {
@@ -395,6 +404,7 @@ function initiateCalculator() {
                         digitalScreenInput.textContent = ''
                         currentOperator = 'pow'
                         operationInProgress = true
+                        visualOperator()
                     }
                 })
             } else if (square.classList.contains('multiply')) {
@@ -405,6 +415,7 @@ function initiateCalculator() {
                         digitalScreenInput.textContent = ''
                         currentOperator = 'multiply'
                         operationInProgress = true
+                        visualOperator()
                     }
                 })
             } else if (square.classList.contains('subtract')) {
@@ -421,6 +432,7 @@ function initiateCalculator() {
                         digitalScreenInput.textContent = ''
                         currentOperator = 'subtract'
                         operationInProgress = true
+                        visualOperator()
                     }
                 })
             } else if (square.classList.contains('add')) {
@@ -431,6 +443,7 @@ function initiateCalculator() {
                         digitalScreenInput.textContent = ''
                         currentOperator = 'add'
                         operationInProgress = true
+                        visualOperator()
                     }
                 })
             } else if (square.classList.contains('divide')) {
@@ -441,10 +454,33 @@ function initiateCalculator() {
                         digitalScreenInput.textContent = ''
                         currentOperator = 'divide'
                         operationInProgress = true
+                        visualOperator()
                     }
                 })
             }
         })
+
+        const digitalScreenOperator = document.createElement('div')
+        digitalScreenOperator.classList.add('visual-operator')
+        digitalScreen.appendChild(digitalScreenOperator)
+
+        function visualOperator() {
+            if (currentOperator === 'sqrt') {
+                digitalScreenOperator.textContent = '√'
+            } else if (currentOperator === 'modulus') {
+                digitalScreenOperator.textContent = '%'
+            } else if (currentOperator === 'pow') {
+                digitalScreenOperator.textContent = 'xˣ'
+            } else if (currentOperator === 'multiply') {
+                digitalScreenOperator.textContent = 'x'
+            } else if (currentOperator === 'subtract') {
+                digitalScreenOperator.textContent = '-'
+            } else if (currentOperator === 'add') {
+                digitalScreenOperator.textContent = '+'
+            } else if (currentOperator === 'divide') {
+                digitalScreenOperator.textContent = '÷'
+            }
+        }
         //keypad operator logic 
 
         function evaluate() {
@@ -476,6 +512,7 @@ function initiateCalculator() {
             operationInProgress = false
             isNegative = false //reset negative sign capability
             currentOperator = '' //reset psuedo switch statement
+            digitalScreenOperator.textContent = ''
             b = 0
         }
 
@@ -513,16 +550,15 @@ function initiateCalculator() {
                 evaluate()
             }
         })
+
+        const calcMemoryArray = []
+
     }
 }
 initiateCalculator()
 
 //AC isnt reseting variables
 
-//Need an indicator of what operation is happening
-
 //Have to code circle buttons
-
-//have to animate calculator entrance
 
 // I want to animate stars on the edges of the screen, as well as the hue in the middle of the background changing.
