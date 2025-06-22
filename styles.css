@@ -21,6 +21,7 @@ body {
     background: linear-gradient(to right, rgb(250, 90, 90), rgb(190, 52, 144), rgb(62, 77, 9), rgb(226, 132, 25), rgb(73, 76, 245), rgb(149, 226, 25), rgb(250, 90, 90));
     background-size: 400% 400%;
     animation: gradient 25s ease infinite;
+    aspect-ratio: 16 / 9;
 }
 
 @keyframes gradient {
@@ -46,6 +47,7 @@ body {
     box-shadow: 10px 10px 10px rgba(0, 0, 0, 0.39);
     z-index: 4;
     opacity: 0;
+    aspect-ratio: 16 / 9;
     
 }.calculator-container::before {  
     content: "";
@@ -64,6 +66,7 @@ body {
     border-right-width: 10px;
     border-radius: 20px;
     backdrop-filter: blur(3px) ;
+    aspect-ratio: 16 / 9;
 }.calculator-container::after {
     content: "";
     position:absolute;
@@ -82,6 +85,7 @@ body {
     border-radius: 20px;
     backdrop-filter: blur(7px);
     z-index: 2;
+    aspect-ratio: 16 / 9;
 }
 
 .calc-border {
@@ -97,6 +101,7 @@ body {
     box-shadow: inset 0px 5px 80px 10px;
     border-radius: 50px;
     opacity: 0;
+    aspect-ratio: 16 / 9;
 }
 
 .inner-shadow {
@@ -113,6 +118,7 @@ body {
     outline-style: solid;
     outline-offset: -7px;
     outline-color: rgb(83, 83, 83);
+    
 }
 
 .digital-screen {
@@ -153,6 +159,32 @@ body {
     font-weight: 600;
     height: 25px;
     width: 25px;
+    z-index: 10;
+    color: rgb(53, 53, 53);
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+}
+
+.mem-text {
+    position: absolute;
+    top: 8%;
+    left: 37%;
+    font-size: 15px;
+    font-weight: 600;
+    height: 25px;
+    width: 100px;
+    z-index: 10;
+    color: rgb(53, 53, 53);
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+}
+
+.mem-text2 {
+    position: absolute;
+    top: 8%;
+    left: 67%;
+    font-size: 15px;
+    font-weight: 600;
+    height: 25px;
+    width: 100px;
     z-index: 10;
     color: rgb(53, 53, 53);
     font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;

@@ -104,10 +104,15 @@ function initiateCalculator() {
     circleButton1.textContent = 'ON'
     circleButton2.textContent = 'AC'
     circleButton3.textContent = 'M+'
+    circleButton3.classList.add('m+')
     circleButton4.textContent = 'M-'
+    circleButton4.classList.add('m-')
     circleButton5.textContent = 'MR'
+    circleButton5.classList.add('mr')
     circleButton6.textContent = 'MC'
+    circleButton6.classList.add('mc')
     circleButton7.textContent = 'GT'
+    circleButton7.classList.add('gt')
 
     const squareContainer = document.createElement('div')
     squareContainer.classList.add('squares-container')
@@ -315,6 +320,9 @@ function initiateCalculator() {
         circleButton2.addEventListener('mousedown', () => {
             digitalScreenInput.textContent = ''
             stringActive = false
+            memoryMode = false
+            memText.textContent = ''
+            memText2.textContent = ''
         })
 
         //AC button
@@ -337,6 +345,8 @@ function initiateCalculator() {
                     b = digitalScreenInput.textContent
                 }
                 stringActive = true //string is now active on number button press
+                memText.textContent = ''
+                memText2.textContent = ''
             })
         })
 
@@ -383,6 +393,8 @@ function initiateCalculator() {
                         digitalScreenInput.textContent = ''
                         currentOperator = 'sqrt' //sends current operator to evaluation
                         evaluate()
+                        memText.textContent = ''
+                        memText2.textContent = ''
                     }
                 })
             } else if (square.classList.contains('modulus')) {
@@ -394,6 +406,8 @@ function initiateCalculator() {
                         currentOperator = 'modulus'
                         operationInProgress = true // sqrt doesn't need operationInProgress, instant evaluation.
                         visualOperator()
+                        memText.textContent = ''
+                        memText2.textContent = ''
                     }
                 })
             } else if (square.classList.contains('pow')) {
@@ -405,6 +419,8 @@ function initiateCalculator() {
                         currentOperator = 'pow'
                         operationInProgress = true
                         visualOperator()
+                        memText.textContent = ''
+                        memText2.textContent = ''
                     }
                 })
             } else if (square.classList.contains('multiply')) {
@@ -416,6 +432,8 @@ function initiateCalculator() {
                         currentOperator = 'multiply'
                         operationInProgress = true
                         visualOperator()
+                        memText.textContent = ''
+                        memText2.textContent = ''
                     }
                 })
             } else if (square.classList.contains('subtract')) {
@@ -424,6 +442,8 @@ function initiateCalculator() {
                             if (!isNegative) { //prevents multiple negative symbols
                                 digitalScreenInput.textContent += '-'
                                 isNegative = true
+                                memText.textContent = ''
+                                memText2.textContent = ''
                             }
                         }
                     if (stringActive && currentOperator === '') {
@@ -433,6 +453,8 @@ function initiateCalculator() {
                         currentOperator = 'subtract'
                         operationInProgress = true
                         visualOperator()
+                        memText.textContent = ''
+                        memText2.textContent = ''
                     }
                 })
             } else if (square.classList.contains('add')) {
@@ -444,6 +466,8 @@ function initiateCalculator() {
                         currentOperator = 'add'
                         operationInProgress = true
                         visualOperator()
+                        memText.textContent = ''
+                        memText2.textContent = ''
                     }
                 })
             } else if (square.classList.contains('divide')) {
@@ -455,6 +479,8 @@ function initiateCalculator() {
                         currentOperator = 'divide'
                         operationInProgress = true
                         visualOperator()
+                        memText.textContent = ''
+                        memText2.textContent = ''
                     }
                 })
             }
@@ -551,7 +577,77 @@ function initiateCalculator() {
             }
         })
 
-        const calcMemoryArray = []
+        let calcMemoryArray = []
+        let memoryMode = false
+        let grandTotal = 0
+
+        const memText = document.createElement('div')
+        memText.classList.add('mem-text')
+        digitalScreen.appendChild(memText)
+
+        const memText2 = document.createElement('div')
+        memText2.classList.add('mem-text2')
+        digitalScreen.appendChild(memText2)
+
+        const circleButtonOperations = keypadContainer.querySelectorAll('.circle-button')
+        circleButtonOperations.forEach(circle => {
+            if (circle.classList.contains('m+')) {
+                circle.addEventListener('mousedown', () => {
+                    if (stringActive && currentOperator === '') {
+                        calcMemoryArray.push(digitalScreenInput.textContent)
+                        memText.textContent = `MEM${calcMemoryArray.length} Filled`
+                    } else if (!stringActive && currentOperator === '') {
+                        memText2.textContent = 'Input Empty'
+                    } else {
+                        memText2.textContent = 'Finish Operation'
+                    }
+                })
+            } else if (circle.classList.contains('m-')) {
+                circle.addEventListener('mousedown', () => {
+                    if (currentOperator === '') {
+
+                    }
+                })
+            } else if (circle.classList.contains('mr')) {
+                circle.addEventListener('mousedown', () => {
+                    if (currentOperator = '') {
+                        
+                    }
+                })
+            } else if (circle.classList.contains('mc')) {
+                circle.addEventListener('mousedown', () => {
+                    if (currentOperator === '') {
+                        if (calcMemoryArray.length > 0) {
+                            calcMemoryArray = []
+                            memText.textContent = 'MEM Cleared'
+                        } else {
+                            memText.textContent = 'MEM Empty'
+                        }
+
+                    }
+                })
+            } else if (circle.classList.contains('gt')) {
+                circle.addEventListener('mousedown', () => {
+                    if (currentOperator === '') {
+                        if (calcMemoryArray.length > 0) {
+                            grandTotal = calcMemoryArray.reduce((total, current) => {
+                            total = Number(total)
+                            current = Number(current)
+                            return total + current;
+                            }, 0)
+                        digitalScreenInput.textContent = grandTotal
+                        memText.textContent = 'Grand Total'
+                        } else {
+                            memText.textContent = 'MEM Empty'
+                        }
+                    }
+                })
+            }
+        })
+
+        function enterMemoryMode() {
+
+        }
 
     }
 }
@@ -560,5 +656,13 @@ initiateCalculator()
 //AC isnt reseting variables
 
 //Have to code circle buttons
+
+//Have to code arrows and DEL, have a MEM1, MEM2, MEM3 etc to visualize which memory slot you are on. pressing arrows will move around memory mode.
+
+//M- is the only circle button operator where you have to enter MEM mode first, so first press will take you to mem mode
+
+//Have a 'finish operation' that pops up when trying to use memory commands while in active operation, or when pressing another operator while one is active.
+
+//MEMX Filled notification
 
 // I want to animate stars on the edges of the screen, as well as the hue in the middle of the background changing.
