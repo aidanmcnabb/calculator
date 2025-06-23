@@ -321,9 +321,19 @@ function initiateCalculator() {
             digitalScreenInput.textContent = ''
             stringActive = false
             memoryMode = false
+            a = undefined
+            b = undefined
+            digitalScreenOperator.textContent = ''
             memText.textContent = ''
             memText2.textContent = ''
+            isNegative = false
+            result = undefined
+            notation = false
+            operationInProgress = false
+            //resultFilled = false
+            negativePossible()
         })
+            
 
         //AC button
 
@@ -438,7 +448,7 @@ function initiateCalculator() {
                 })
             } else if (square.classList.contains('subtract')) {
                 square.addEventListener('mousedown', () => {
-                    if (ON && digitalScreenInput.textContent === '' || negativePossible()) { //prevents premptive negative / allows initial negative & checks if negative is possible
+                    if ((ON && digitalScreenInput.textContent === '') || negativePossible()) { //prevents premptive negative / allows initial negative & checks if negative is possible
                             if (!isNegative) { //prevents multiple negative symbols
                                 digitalScreenInput.textContent += '-'
                                 isNegative = true
@@ -447,14 +457,17 @@ function initiateCalculator() {
                             }
                         }
                     if (stringActive && currentOperator === '') {
-                        stringActive = false
-                        a = digitalScreenInput.textContent
-                        digitalScreenInput.textContent = ''
-                        currentOperator = 'subtract'
-                        operationInProgress = true
-                        visualOperator()
-                        memText.textContent = ''
-                        memText2.textContent = ''
+                        
+                            stringActive = false
+                            a = digitalScreenInput.textContent
+                            digitalScreenInput.textContent = ''
+                            currentOperator = 'subtract'
+                            operationInProgress = true
+                            visualOperator()
+                            memText.textContent = ''
+                            memText2.textContent = ''
+                        
+
                     }
                 })
             } else if (square.classList.contains('add')) {
@@ -609,11 +622,13 @@ function initiateCalculator() {
                     }
                 })
             } else if (circle.classList.contains('mr')) {
+                /*
                 circle.addEventListener('mousedown', () => {
                     if (currentOperator = '') {
                         
                     }
                 })
+                */
             } else if (circle.classList.contains('mc')) {
                 circle.addEventListener('mousedown', () => {
                     if (currentOperator === '') {
