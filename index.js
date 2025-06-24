@@ -340,7 +340,7 @@ function initiateCalculator() {
             currentOperator = ''
         })
 
-        //AC button
+        //AC button / reset variables
 
         function negativePossible() { //even if a current operation is in progress, negative is possible
             return currentOperator === 'sqrt' || currentOperator === 'modulus' || currentOperator === 'pow' || currentOperator === 'subtract' || currentOperator === 'multiply' || currentOperator === 'divide' || currentOperator === 'add'
@@ -355,13 +355,13 @@ function initiateCalculator() {
                     }
                 resultFilled = false //result no longer filled
             }
-            if (square.classList.contains('decimal')) {
-                if (!digitalScreenInput.textContent.includes('.')) {
+            if (square.classList.contains('decimal')) { 
+                if (!digitalScreenInput.textContent.includes('.')) { //prevents multiple decimals
                     digitalScreenInput.textContent += square.textContent
                 } 
             } else {digitalScreenInput.textContent += square.textContent}
             if (operationInProgress) { 
-                b = digitalScreenInput.textContent
+                b = digitalScreenInput.textContent //store b 
             }
             stringActive = true //string is now active on number button press
             memText.textContent = ''
@@ -373,7 +373,7 @@ function initiateCalculator() {
         let tempSlice = undefined
 
         const deleteButton = squareContainer2.querySelector('.delete')
-        deleteButton.addEventListener('mousedown', () => {
+        deleteButton.addEventListener('mousedown', () => { //backspace / del
             if (stringActive) {
                 if (digitalScreenInput.textContent.length > 0) {
                     tempSlice = digitalScreenInput.textContent.slice(0, -1)
@@ -415,7 +415,7 @@ function initiateCalculator() {
         }
         //calculations and callback function to call them
 
-        function digitalInputReset() {
+        function digitalInputReset() { 
             stringActive = false
             a = digitalScreenInput.textContent
             digitalScreenInput.textContent = ''
@@ -426,7 +426,7 @@ function initiateCalculator() {
             }
         }
 
-        function digitalMemInputReset() {
+        function digitalMemInputReset() { //reset mem stats
             memText.textContent = ''
             memText2.textContent = ''
             memText3.textContent = ''
@@ -515,7 +515,7 @@ function initiateCalculator() {
         digitalScreenOperator.classList.add('visual-operator')
         digitalScreen.appendChild(digitalScreenOperator)
 
-        function visualOperator() {
+        function visualOperator() { //visual representation of current operator to avoid confusion
             if (currentOperator === 'sqrt') {
                 digitalScreenOperator.textContent = '√'
             } else if (currentOperator === 'modulus') {
@@ -569,7 +569,7 @@ function initiateCalculator() {
 
         let notation = false
 
-        function isFloat(num) {
+        function isFloat(num) { //check if float
             return num % 1 !== 0;
         }
 
@@ -596,13 +596,13 @@ function initiateCalculator() {
             console.log(result)
         }
 
-        equalsButton.addEventListener('mousedown', () => {
+        equalsButton.addEventListener('mousedown', () => { //final evaluate
             if (currentOperator === '') {} else {
                 evaluate()
             }
         })
 
-        let calcMemoryArray = []
+        let calcMemoryArray = [] 
         let memoryMode = false
         let grandTotal = 0
         
