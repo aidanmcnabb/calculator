@@ -175,6 +175,9 @@ function initiateCalculator() {
             });
         })
     }
+
+    squareButton12.classList.add('decimal')
+
     // Square button container 2
 
     squareButton13.textContent = '←'
@@ -186,6 +189,7 @@ function initiateCalculator() {
 
     squareButton13.classList.add('left')
     squareButton14.classList.add('right')
+    squareButton15.classList.add('delete')
     squareButton16.classList.add('sqrt')
     squareButton17.classList.add('modulus')
     squareButton18.classList.add('pow')
@@ -328,13 +332,13 @@ function initiateCalculator() {
             digitalScreenOperator.textContent = ''
             memText.textContent = ''
             memText2.textContent = ''
+            memText3.textContent = ''
             result = undefined
             notation = false
             operationInProgress = false
             resultFilled = false
             currentOperator = ''
         })
-            
 
         //AC button
 
@@ -345,20 +349,39 @@ function initiateCalculator() {
         const squareButtonsInput = squareContainer.querySelectorAll('.square')
         squareButtonsInput.forEach(square => {
             square.addEventListener('mousedown', () => {
-                if (resultFilled) { //if result from last operation is filled, temporarily erase input field on next number button press
-                    if (negativePossible()) {} else { // preventing negative sign from being erased on number button press if result was already filled
-                            digitalScreenInput.textContent = ''
-                        }
-                    resultFilled = false //result no longer filled
-                }
-                digitalScreenInput.textContent += square.textContent
-                if (operationInProgress) { 
-                    b = digitalScreenInput.textContent
-                }
-                stringActive = true //string is now active on number button press
-                memText.textContent = ''
-                memText2.textContent = ''
+            if (resultFilled) { //if result from last operation is filled, temporarily erase input field on next number button press
+                if (negativePossible()) {} else { // preventing negative sign from being erased on number button press if result was already filled
+                        digitalScreenInput.textContent = ''
+                    }
+                resultFilled = false //result no longer filled
+            }
+            if (square.classList.contains('decimal')) {
+                if (!digitalScreenInput.textContent.includes('.')) {
+                    digitalScreenInput.textContent += square.textContent
+                } 
+            } else {digitalScreenInput.textContent += square.textContent}
+            if (operationInProgress) { 
+                b = digitalScreenInput.textContent
+            }
+            stringActive = true //string is now active on number button press
+            memText.textContent = ''
+            memText2.textContent = ''
+            memText3.textContent = ''
             })
+        })
+
+        let tempSlice = undefined
+
+        const deleteButton = squareContainer2.querySelector('.delete')
+        deleteButton.addEventListener('mousedown', () => {
+            if (stringActive) {
+                if (digitalScreenInput.textContent.length > 0) {
+                    tempSlice = digitalScreenInput.textContent.slice(0, -1)
+                    digitalScreenInput.textContent = tempSlice
+                    b = digitalScreenInput.textContent
+                    console.log(tempSlice)
+                }
+            }
         })
 
         let result = undefined
@@ -392,57 +415,60 @@ function initiateCalculator() {
         }
         //calculations and callback function to call them
 
+        function digitalInputReset() {
+            stringActive = false
+            a = digitalScreenInput.textContent
+            digitalScreenInput.textContent = ''
+            if (currentOperator === 'sqrt') { // sqrt doesn't need operationInProgress, instant evaluation.
+                operationInProgress = false
+            } else {
+                operationInProgress = true
+            }
+        }
+
+        function digitalMemInputReset() {
+            memText.textContent = ''
+            memText2.textContent = ''
+            memText3.textContent = ''
+            memoryMode = false
+        }
+
         const squareOperatorsInput1 = keypadContainer.querySelectorAll('.square')
         squareOperatorsInput1.forEach(square => {
             if (square.classList.contains('sqrt')) {
                 square.addEventListener('mousedown', () => {
-                    if (stringActive && currentOperator === '') { //if string is active & there is no operator, prepare for calculation. prevents premptive operation / multiple operators.
-                        stringActive = false
-                        a = digitalScreenInput.textContent
-                        digitalScreenInput.textContent = ''
+                    if ((stringActive && currentOperator === '') || (memoryMode && currentOperator === '')) { //if string is active & there is no operator, prepare for calculation. prevents premptive operation / multiple operators.
                         currentOperator = 'sqrt' //sends current operator to evaluation
+                        digitalInputReset()
                         evaluate()
-                        memText.textContent = ''
-                        memText2.textContent = ''
+                        digitalMemInputReset()
                     }
                 })
             } else if (square.classList.contains('modulus')) {
                 square.addEventListener('mousedown', () => {
-                    if (stringActive && currentOperator === '') {
-                        stringActive = false
-                        a = digitalScreenInput.textContent
-                        digitalScreenInput.textContent = ''
+                    if ((stringActive && currentOperator === '') || (memoryMode && currentOperator === '')) {
                         currentOperator = 'modulus'
-                        operationInProgress = true // sqrt doesn't need operationInProgress, instant evaluation.
+                        digitalInputReset()
                         visualOperator()
-                        memText.textContent = ''
-                        memText2.textContent = ''
+                        digitalMemInputReset()
                     }
                 })
             } else if (square.classList.contains('pow')) {
                 square.addEventListener('mousedown', () => {
-                    if (stringActive && currentOperator === '') {
-                        stringActive = false
-                        a = digitalScreenInput.textContent
-                        digitalScreenInput.textContent = ''
+                    if ((stringActive && currentOperator === '') || (memoryMode && currentOperator === '')) {
                         currentOperator = 'pow'
-                        operationInProgress = true
+                        digitalInputReset()
                         visualOperator()
-                        memText.textContent = ''
-                        memText2.textContent = ''
+                        digitalMemInputReset()
                     }
                 })
             } else if (square.classList.contains('multiply')) {
                 square.addEventListener('mousedown', () => {
-                    if (stringActive && currentOperator === '') {
-                        stringActive = false
-                        a = digitalScreenInput.textContent
-                        digitalScreenInput.textContent = ''
+                    if ((stringActive && currentOperator === '') || (memoryMode && currentOperator === '')) {
                         currentOperator = 'multiply'
-                        operationInProgress = true
+                        digitalInputReset()
                         visualOperator()
-                        memText.textContent = ''
-                        memText2.textContent = ''
+                        digitalMemInputReset()
                     }
                 })
             } else if (square.classList.contains('subtract')) {
@@ -453,44 +479,33 @@ function initiateCalculator() {
                                     digitalScreenInput.textContent += '-'
                                     memText.textContent = ''
                                     memText2.textContent = ''
+                                    memText3.textContent = ''
                                 }
                             }
                         }
-                    if (stringActive && currentOperator === '') {
-                        stringActive = false
-                        a = digitalScreenInput.textContent
-                        digitalScreenInput.textContent = ''
+                    if ((stringActive && currentOperator === '') || (memoryMode && currentOperator === '')) {
                         currentOperator = 'subtract'
-                        operationInProgress = true
+                        digitalInputReset()
                         visualOperator()
-                        memText.textContent = ''
-                        memText2.textContent = ''
+                        digitalMemInputReset()
                     }
                 })
             } else if (square.classList.contains('add')) {
                 square.addEventListener('mousedown', () => {
-                    if (stringActive && currentOperator === '') {
-                        stringActive = false
-                        a = digitalScreenInput.textContent
-                        digitalScreenInput.textContent = ''
+                    if ((stringActive && currentOperator === '') || (memoryMode && currentOperator === '')) {
                         currentOperator = 'add'
-                        operationInProgress = true
+                        digitalInputReset()
                         visualOperator()
-                        memText.textContent = ''
-                        memText2.textContent = ''
+                        digitalMemInputReset()
                     }
                 })
             } else if (square.classList.contains('divide')) {
                 square.addEventListener('mousedown', () => {
-                    if (stringActive && currentOperator === '') {
-                        stringActive = false
-                        a = digitalScreenInput.textContent
-                        digitalScreenInput.textContent = ''
+                    if ((stringActive && currentOperator === '') || (memoryMode && currentOperator === '')) {
                         currentOperator = 'divide'
-                        operationInProgress = true
+                        digitalInputReset()
                         visualOperator()
-                        memText.textContent = ''
-                        memText2.textContent = ''
+                        digitalMemInputReset()
                     }
                 })
             }
@@ -590,7 +605,7 @@ function initiateCalculator() {
         let calcMemoryArray = []
         let memoryMode = false
         let grandTotal = 0
-
+        
         const memText = document.createElement('div')
         memText.classList.add('mem-text')
         digitalScreen.appendChild(memText)
@@ -598,6 +613,10 @@ function initiateCalculator() {
         const memText2 = document.createElement('div')
         memText2.classList.add('mem-text2')
         digitalScreen.appendChild(memText2)
+
+        const memText3 = document.createElement('div')
+        memText3.classList.add('mem-text3')
+        digitalScreen.appendChild(memText3)
 
         const circleButtonOperations = keypadContainer.querySelectorAll('.circle-button')
         circleButtonOperations.forEach(circle => {
@@ -616,15 +635,17 @@ function initiateCalculator() {
             } else if (circle.classList.contains('m-')) {
                 circle.addEventListener('mousedown', () => {
                     if (currentOperator === '' && !operationInProgress) {
-                        console.log('dookie')
-                    } else {memText2.textContent = 'Finish Operation'}
+                        if (memoryMode) {
+                            memDelete()
+                        } else {} 
+                    }
                 })
             } else if (circle.classList.contains('mr')) {
                 circle.addEventListener('mousedown', () => {
                     if (currentOperator === '' && !operationInProgress) {
                         if (!memoryMode && calcMemoryArray.length > 0) {
                             enterMemoryMode()
-                        } else {memoryMode = false}
+                        }
                     } else {memText2.textContent = 'Finish Operation'}
                 })
             } else if (circle.classList.contains('mc')) {
@@ -633,15 +654,17 @@ function initiateCalculator() {
                         if (calcMemoryArray.length > 0) {
                             calcMemoryArray = []
                             memText.textContent = 'MEM Cleared'
+                            memText2.textContent = ''
+                            memText3.textContent = ''
                         } else {
                             memText.textContent = 'MEM Empty'
                         }
-
                     }
                 })
             } else if (circle.classList.contains('gt')) {
                 circle.addEventListener('mousedown', () => {
                     if (currentOperator === '' && !operationInProgress) {
+                        digitalMemInputReset()
                         if (calcMemoryArray.length > 0) {
                             grandTotal = calcMemoryArray.reduce((total, current) => {
                             total = Number(total)
@@ -650,6 +673,7 @@ function initiateCalculator() {
                             }, 0)
                         digitalScreenInput.textContent = grandTotal
                         memText.textContent = 'Grand Total'
+                        stringActive = true
                         } else {
                             memText.textContent = 'MEM Empty'
                         }
@@ -668,13 +692,7 @@ function initiateCalculator() {
                     square.addEventListener('mousedown', () => {
                         if (memoryMode && calcMemoryArrayCounter > 0) {
                             calcMemoryArrayCounter--
-                            if (firstArrow) {
-                                calcMemoryArrayCounter = 0
-                            }
-                            firstArrow = false
-                            console.log(calcMemoryArrayCounter)
                             memNav()
-                            console.log(calcMemoryArray)
                         } else if (memoryMode && calcMemoryArray.length === 0) {
                             memText2.textContent = 'MEM Empty'
                         }
@@ -683,13 +701,7 @@ function initiateCalculator() {
                     square.addEventListener('mousedown', () => {
                         if (memoryMode && calcMemoryArrayCounter < calcMemoryArray.length - 1) {
                             calcMemoryArrayCounter++
-                            console.log(calcMemoryArrayCounter)
-                            if (firstArrow) {
-                                calcMemoryArrayCounter = 0
-                            }
-                            firstArrow = false
                             memNav()
-                            console.log(calcMemoryArray)
                         } else if (memoryMode && calcMemoryArray.length === 0) {
                             memText2.textContent = 'MEM Empty'
                         }
@@ -702,9 +714,9 @@ function initiateCalculator() {
             memoryMode = true
             firstArrow = true
             memText2.textContent = 'MEM Mode'
-            //MR & M- enter memory mode, I dont think i should add the ability to alter the array values, just add and delete from the array.
-            //You can use operators on existing array values while in memory mode, but pressing numbers will exit memory mode and replace the existing digital input.
-            // i also dont want the ability to add numbers to the existing memory text content, when pressing numbers, it erases the text content. only operations available.
+            memText3.textContent = 'Use Arrows'
+            calcMemoryArrayCounter = 0
+            memNav()
         }
 
         function memNav() {
@@ -712,15 +724,37 @@ function initiateCalculator() {
             digitalScreenInput.textContent = `${calcMemoryArray[calcMemoryArrayCounter]}`
         }
 
+        function memDelete() {
+            memText3.textContent = `SLOT ${(calcMemoryArray.indexOf(calcMemoryArray[calcMemoryArrayCounter])) + 1} Erased`
+            if (calcMemoryArrayCounter === 0) {
+                calcMemoryArray.splice(calcMemoryArrayCounter, 1)
+            } else {
+                calcMemoryArray.splice(calcMemoryArrayCounter, 1)
+                calcMemoryArrayCounter--
+            }
+            if (calcMemoryArray.length > 0) {
+                memText.textContent = `MEM SLOT ${(calcMemoryArray.indexOf(calcMemoryArray[calcMemoryArrayCounter])) + 1}`
+                digitalScreenInput.textContent = `${calcMemoryArray[calcMemoryArrayCounter]}`
+                console.log(calcMemoryArray)
+            } else {
+                memText.textContent = 'MEM Empty'
+                memText2.textContent = ''
+            }
+            
+        }
+
     }
 }
 initiateCalculator()
 
-//Have to code circle buttons
+/*
+if (firstArrow) {
+    calcMemoryArrayCounter = 0
+}
+firstArrow = false
+*/
 
-//Have to code arrows and DEL, have a MEM1, MEM2, MEM3 etc to visualize which memory slot you are on. pressing arrows will move around memory mode.
-
-//M- is the only circle button operator where you have to enter MEM mode first, so first press will take you to mem mode
+//if two memory slots are the same value they duplicate index
 
 //I want to animate stars on the edges of the screen, as well as the hue in the middle of the background changing.
 
