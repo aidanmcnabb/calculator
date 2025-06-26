@@ -379,8 +379,21 @@ function initiateCalculator() {
                     tempSlice = digitalScreenInput.textContent.slice(0, -1)
                     digitalScreenInput.textContent = tempSlice
                     b = digitalScreenInput.textContent
-                    console.log(tempSlice)
+                    if (digitalScreenInput.textContent === '') {
+                        stringActive = false
+                    } else if (stringActive && digitalScreenInput.textContent.includes('-') && digitalScreenInput.textContent.length < 2) {
+                        stringActive = false
+                        b = digitalScreenInput.textContent
+                    }
                 }
+            } else if (!stringActive && digitalScreenInput.textContent.includes('-')) {
+                tempSlice = digitalScreenInput.textContent.slice(0, -1)
+                digitalScreenInput.textContent = tempSlice
+            } else if (memoryMode) {
+                memText.textContent = ''
+                memText2.textContent = ''
+                memText3.textContent = ''
+                memoryMode = false
             }
         })
 
@@ -746,13 +759,6 @@ function initiateCalculator() {
     }
 }
 initiateCalculator()
-
-/*
-if (firstArrow) {
-    calcMemoryArrayCounter = 0
-}
-firstArrow = false
-*/
 
 //if two memory slots are the same value they duplicate index
 
